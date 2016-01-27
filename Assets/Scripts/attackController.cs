@@ -7,46 +7,82 @@ public class attackController : MonoBehaviour
     public GameObject bullet_prefab;
     public float bulletSpeed = 100f;
     public string weaponType = "ranged";
+    public float attackTimer = 0.0f;
+    public float cooldown = 1.0f;
     List<GameObject> nearEnemy = new List<GameObject>();
+    public string enemyTag;
 
     // Use this for initialization
     void Start()
     {
 
     }
-
+    void onGUI()
+    {
+        if (tag == "Player")
+        {
+            GUI.Box(new Rect(10, 10, 0, 20), attackTimer + "/");
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") )
+        attackTimer = Mathf.Clamp(attackTimer, 0.0f, 1.0f);
+        Vector3 playerPos = transform.position;
+        if (attackTimer > 0)
         {
-            if (weaponType == "ranged")
+            attackTimer -= Time.deltaTime;
+        }
+        if (attackTimer <= 0)
+        {
+           
+            if (Input.GetButtonDown("Fire1"))
             {
 
-                GameObject bullet = (GameObject)Instantiate(bullet_prefab, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
-                bullet.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * bulletSpeed, ForceMode.Impulse);
-            }
-            else if (weaponType == "melee")
-            {
-                Debug.Log("Melee Attack");
-                Vector3 playerPos = transform.position;
-                for (int i = 0; i < nearEnemy.Count; i++)
+                if (weaponType == "ranged")
                 {
-                    Vector3 enemyPos = nearEnemy[i].transform.position;
-                    Vector3 enemyDirection = enemyPos - playerPos;
-                    if(Vector3.Dot(enemyDirection, transform.forward) < 1.5)
-                    {
-                        Debug.Log("Hit Enemy & Applied Damage");
-                        nearEnemy[i].GetComponent<EnemyController>().AdjustCurrentHealth(-10);    
-                    }
+                    rangedAttack();
                 }
+                else if (weaponType == "melee")
+                {
+                    meleeAttack(playerPos);
+                }
+                attackTimer = cooldown;
+            }
+
+            if (tag == "Enemy")
+            {
+                meleeAttack(playerPos);
+                attackTimer = cooldown;
+            }
+           
+        }
+    }
+
+    void rangedAttack()
+    {
+        GameObject bullet = (GameObject)Instantiate(bullet_prefab, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
+        bullet.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * bulletSpeed, ForceMode.Impulse);
+    }
+    void meleeAttack(Vector3 playerPos)
+    {
+        Debug.Log("Melee Attack");
+        
+        for (int i = 0; i < nearEnemy.Count; i++)
+        {
+            Vector3 enemyPos = nearEnemy[i].transform.position;
+            Vector3 enemyDirection = enemyPos - playerPos;
+            if (Vector3.Dot(enemyDirection, transform.forward) < 1.5)
+            {
+                Debug.Log("Hit Enemy & Applied Damage");
+                nearEnemy[i].GetComponent<HealthController>().AdjustCurrentHealth(-10);
             }
         }
     }
     void OnTriggerEnter(Collider col)
     {
 
-        if (col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == enemyTag)
         {
             nearEnemy.Add(col.gameObject);
         }
@@ -54,7 +90,7 @@ public class attackController : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == enemyTag)
         {
             nearEnemy.Remove(col.gameObject);
         }

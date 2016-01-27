@@ -24,9 +24,9 @@ public class projectileController : MonoBehaviour
 
 	void OnCollisionEnter (Collision c)
 	{
-		if (c.gameObject.tag == "Enemy") {
-			c.gameObject.GetComponent<EnemyController> ().AdjustCurrentHealth (-10);  
-		}
+		
+		c.gameObject.GetComponent<HealthController> ().AdjustCurrentHealth (-10);  
+
 	}
 
 
