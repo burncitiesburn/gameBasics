@@ -27,7 +27,7 @@ public class FirstPersonController : MonoBehaviour
 		Cursor.visible = false;
 		cController = GetComponent<CharacterController> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
@@ -36,12 +36,12 @@ public class FirstPersonController : MonoBehaviour
 		float yaw = Input.GetAxis ("Mouse X") * mSensitivity;
 		transform.Rotate (0, yaw, 0);
 
-
+		/*
 		//look left right
 		pitch -= Input.GetAxis ("Mouse Y") * mSensitivity;
 		pitch = Mathf.Clamp (pitch, -neckStop, neckStop);
 		Camera.main.transform.localRotation = Quaternion.Euler (pitch, 0, 0);
-
+*/
 		//move forward/back/left/right
 		float fSpeed = Input.GetAxis ("Vertical") * mvSpeed;
 		float sSpeed = Input.GetAxis ("Horizontal") * mvSpeed;
@@ -87,7 +87,7 @@ public class FirstPersonController : MonoBehaviour
 		}
 		Vector3 speed = new Vector3 (sSpeed, vVelocity, fSpeed);
 
-		speed = transform.rotation * speed;
+		speed = speed;
 		cController.Move (speed * Time.deltaTime);
 
 	}
