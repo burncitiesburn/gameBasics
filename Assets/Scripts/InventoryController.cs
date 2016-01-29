@@ -45,4 +45,12 @@ public class InventoryController : MonoBehaviour
 	{
 		potions--;
 	}
+
+	public bool hasKey ()
+	{
+		if (keys > 0) {
+			return true;
+		}
+		return false;
+	}
 }
