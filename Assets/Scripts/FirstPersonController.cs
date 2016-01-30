@@ -20,6 +20,7 @@ public class FirstPersonController : MonoBehaviour
 	float pitch = 0;
 	float stamina = 100.0f;
 	Vector3 cameraRay;
+	Vector3 mouseVector;
 
 	// Use this for initialization
 	void Start ()
@@ -32,33 +33,33 @@ public class FirstPersonController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
 		//look up down
 		//aiming
-		Camera yourCamera = Camera.main;
-		float yourCameraHeight = yourCamera.transform.position.y;
-
-		Transform playerTrans = transform;
-		float rotSpeed = 1.0f;
-		Vector3 mouseVector = yourCamera.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, yourCameraHeight));
-		mouseVector.y = playerTrans.position.y;
-		Quaternion targetRotation = Quaternion.LookRotation (new Vector3 (mouseVector.x - playerTrans.position.x, 0, mouseVector.z - playerTrans.position.z));
-		playerTrans.rotation = Quaternion.Lerp (playerTrans.rotation, targetRotation, Time.deltaTime * rotSpeed);    
 		
+		float rotSpeed = 1.0f;
+		RaycastHit hit;
 
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
+		//We need to user a layerMask to specify all layers except the player layer (8)
+		int layerMask = 1 << 8; //set it to 8
+		layerMask = ~layerMask; //Inverse it to get eveything else
 
-		//Debug.Log (aimPos);
-
+		bool diditHit = Physics.Raycast (ray, out hit, 100f, layerMask);
+		if (diditHit) {
+			mouseVector = hit.point;
+		}
+				
+		mouseVector.y = transform.position.y;
 		GameObject.FindGameObjectWithTag ("Cursor").transform.position = mouseVector;
-		//transform.LookAt (aimPos);
+		transform.LookAt (mouseVector);
 
 		/*
 		//look left right
 		pitch -= Input.GetAxis ("Mouse Y") * mSensitivity;
 		pitch = Mathf.Clamp (pitch, -neckStop, neckStop);
 		Camera.main.transform.localRotation = Quaternion.Euler (pitch, 0, 0);
-*/
+        */
 		//move forward/back/left/right
 		float fSpeed = Input.GetAxis ("Vertical") * mvSpeed;
 		float sSpeed = Input.GetAxis ("Horizontal") * mvSpeed;
