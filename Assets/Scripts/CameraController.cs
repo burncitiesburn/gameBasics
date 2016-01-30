@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
 	void FixedUpdate ()
 	{
 		Follow ();
-		RaycastHit[] hits;
+		/*RaycastHit[] hits;
 
 		hits = Physics.RaycastAll (transform.position, transform.forward, Vector3.Distance (transform.position, player.position));
 
@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
 				AT = R.gameObject.AddComponent<AutoTransparent> ();
 			}
 			AT.Transparent ();
-		}
+		}*/
 	}
 
 	void Follow ()
