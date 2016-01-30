@@ -1,9 +1,13 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FirstPersonController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HealthController.cs">
     <Files>
-      <File FileName="Assets\Scripts\FirstPersonController.cs" Line="52" Column="3" />
-      <File FileName="Assets\Scripts\CameraController.cs" Line="46" Column="3" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="56" Column="1" />
+      <File FileName="Assets\Scripts\FirstPersonController.cs" Line="86" Column="26" />
+      <File FileName="Assets\Scripts\AutoTransparent.cs" Line="11" Column="35" />
+      <File FileName="Assets\Scripts\EnemyController.cs" Line="57" Column="17" />
+      <File FileName="Assets\Scripts\attackController.cs" Line="85" Column="4" />
+      <File FileName="Assets\Scripts\HealthController.cs" Line="18" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

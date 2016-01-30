@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
 	public float mvSpeed = 1.0f;
 	Transform myPosition;
 	Transform target;
-    Vector3 aimpoint;
+	Vector3 aimpoint;
 	// Use this for initialization
 
 	void Awake ()
@@ -26,8 +26,8 @@ public class EnemyController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        aimpoint = target.position;
-        aimpoint.y = transform.position.y;
+		aimpoint = target.position;
+		aimpoint.y = transform.position.y;
 		watchForPlayer ();
 	}
 
@@ -50,5 +50,10 @@ public class EnemyController : MonoBehaviour
 			myPosition.position += myPosition.forward * mvSpeed * Time.deltaTime;
 		}
 
+	}
+
+	public void kill ()
+	{
+		Destroy (gameObject);
 	}
 }

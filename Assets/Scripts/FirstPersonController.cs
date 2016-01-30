@@ -86,6 +86,10 @@ public class FirstPersonController : MonoBehaviour
 			vVelocity = jumpSpeed;
 		}
 
+		if (Input.GetButtonDown ("SwitchWeapon")) {
+			GetComponent<attackController> ().switchWeapon ();
+		}
+
 		//crouching
 		if (cController.isGrounded && Input.GetButtonDown ("Crouch")) {
 			cController.height -= crouchHeight;
