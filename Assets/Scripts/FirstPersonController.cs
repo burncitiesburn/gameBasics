@@ -19,12 +19,13 @@ public class FirstPersonController : MonoBehaviour
 	bool isSprinting = false;
 	float pitch = 0;
 	float stamina = 100.0f;
+	Vector3 cameraRay;
 
 	// Use this for initialization
 	void Start ()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+
+
 		cController = GetComponent<CharacterController> ();
 	}
 
@@ -33,8 +34,24 @@ public class FirstPersonController : MonoBehaviour
 	{
 
 		//look up down
-		float yaw = Input.GetAxis ("Mouse X") * mSensitivity;
-		transform.Rotate (0, yaw, 0);
+		//aiming
+		Camera yourCamera = Camera.main;
+		float yourCameraHeight = yourCamera.transform.position.y;
+
+		Transform playerTrans = transform;
+		float rotSpeed = 1.0f;
+		Vector3 mouseVector = yourCamera.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, yourCameraHeight));
+		mouseVector.y = playerTrans.position.y;
+		Quaternion targetRotation = Quaternion.LookRotation (new Vector3 (mouseVector.x - playerTrans.position.x, 0, mouseVector.z - playerTrans.position.z));
+		playerTrans.rotation = Quaternion.Lerp (playerTrans.rotation, targetRotation, Time.deltaTime * rotSpeed);    
+		
+
+
+
+		//Debug.Log (aimPos);
+
+		GameObject.FindGameObjectWithTag ("Cursor").transform.position = mouseVector;
+		//transform.LookAt (aimPos);
 
 		/*
 		//look left right
@@ -86,8 +103,6 @@ public class FirstPersonController : MonoBehaviour
 			fSpeed *= 0.1f;
 		}
 		Vector3 speed = new Vector3 (sSpeed, vVelocity, fSpeed);
-
-		speed = speed;
 		cController.Move (speed * Time.deltaTime);
 
 	}
